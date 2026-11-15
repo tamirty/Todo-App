@@ -2,7 +2,6 @@ import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { userService } from '../services/user.service.js'
 import { login, signup } from '../store/actions/user.js'
 
-
 const { useState } = React
 
 export function LoginSignup() {
@@ -10,7 +9,6 @@ export function LoginSignup() {
     const [isSignup, setIsSignUp] = useState(false)
     const [credentials, setCredentials] = useState(userService.getEmptyCredentials())
     
-
     function handleChange({ target }) {
         const { name: field, value } = target
         setCredentials(prevCreds => ({ ...prevCreds, [field]: value }))

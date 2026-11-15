@@ -1,12 +1,12 @@
 import { utilService } from "../services/util.service.js"
-import { SET_FILTER_BY } from "../store/store.js"
+import { SET_FILTER_BY } from "../store/todo.reducer.js"
 
 const { useState, useEffect, useRef } = React
 const { useSelector, useDispatch } = ReactRedux
 
 export function TodoFilter() {
 
-    const filterBy = useSelector(storeState => storeState.filterBy)
+    const filterBy = useSelector(storeState => storeState.todoModule.filterBy)
     const dispatch = useDispatch()
 
     const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })

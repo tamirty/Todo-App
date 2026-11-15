@@ -14,9 +14,9 @@ const { Link, useSearchParams } = ReactRouterDOM
 export function TodoIndex() {   
 
     const todos = useSelector(getFilteredTodos)
-    const filterBy = useSelector(storeState => storeState.filterBy)
-    const isLoading = useSelector(storeState => storeState.isLoading)
-    const user = useSelector(storeState => storeState.loggedinUser)
+    const filterBy = useSelector(storeState => storeState.todoModule.filterBy)
+    const isLoading = useSelector(storeState => storeState.todoModule.isLoading)
+    const user = useSelector(storeState => storeState.userModule.loggedinUser)
 
     console.log(user);
     

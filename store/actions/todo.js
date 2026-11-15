@@ -1,4 +1,6 @@
-import { ADD_TODO, EDIT_TODO, REMOVE_TODO, SET_TODOS, SET_USER, SET_IS_LOADING, store } from '../store.js'
+import { store } from '../store.js'
+import { ADD_TODO, EDIT_TODO, REMOVE_TODO, SET_TODOS, SET_IS_LOADING } from '../todo.reducer.js'
+import { SET_USER} from '../user.reducer.js'
 import { todoService } from '../../services/todo.service.js'
 import { userService } from '../../services/user.service.js'
 
@@ -46,21 +48,21 @@ export function saveTodo(todo) {
 }
 
 export function getFilteredTodos(state) {
-    const filterBy = state.filterBy
-    let todos = [...state.todos]
+    const { filterBy, todos } = state.todoModule
+    let filteredTodos = [...todos]
 
     if (filterBy.txt) {
         const regExp = new RegExp(filterBy.txt, 'i')
-        todos = todos.filter(todo => regExp.test(todo.txt))
+        filteredTodos = todos.filter(todo => regExp.test(todo.txt))
     }
 
     if (filterBy.importance) {
-        todos = todos.filter(todo => todo.importance >= filterBy.importance)
+        filteredTodos = todos.filter(todo => todo.importance >= filterBy.importance)
     }
 
     if (filterBy.status) {
-        todos = todos.filter(todo => filterBy.status === 'done' ? todo.isDone : !todo.isDone)
+        filteredTodos = todos.filter(todo => filterBy.status === 'done' ? todo.isDone : !todo.isDone)
     }
 
-    return todos
+    return filteredTodos
 }
