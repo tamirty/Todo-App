@@ -17,7 +17,7 @@ export function TodoDetails() {
 
     function loadTodo() {
         todoService.get(params.todoId)
-            .then(setTodo)
+            .then(todo => setTodo(todo))
             .catch(err => {
                 console.error('err:', err)
                 showErrorMsg('Cannot load todo')

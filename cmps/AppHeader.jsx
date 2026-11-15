@@ -1,21 +1,25 @@
 const { useState } = React
 const { Link, NavLink } = ReactRouterDOM
 const { useNavigate } = ReactRouter
+const { useSelector, useDispatch } = ReactRedux
+
 
 import { userService } from '../services/user.service.js'
 import { UserMsg } from "./UserMsg.jsx"
 import { LoginSignup } from './LoginSignup.jsx'
 import { showErrorMsg } from '../services/event-bus.service.js'
+import { logout } from '../store/actions/user.js'
+
 
 
 export function AppHeader() {
     const navigate = useNavigate()
-    const [user, setUser] = useState(userService.getLoggedinUser())
+    const user = useSelector(storeState => storeState.loggedinUser)    
     
     function onLogout() {
-        userService.logout()
+        logout()
             .then(() => {
-                onSetUser(null)
+                console.log('logout');
             })
             .catch((err) => {
                 showErrorMsg('OOPs try again')

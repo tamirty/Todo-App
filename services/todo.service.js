@@ -17,20 +17,8 @@ export const todoService = {
 // For Debug (easy access from console):
 window.cs = todoService
 
-function query(filterBy = {}) {
+function query() {
     return storageService.query(TODO_KEY)
-        .then(todos => {
-            if (filterBy.txt) {
-                const regExp = new RegExp(filterBy.txt, 'i')
-                todos = todos.filter(todo => regExp.test(todo.txt))
-            }
-
-            if (filterBy.importance) {
-                todos = todos.filter(todo => todo.importance >= filterBy.importance)
-            }
-
-            return todos
-        })
 }
 
 function get(todoId) {
@@ -82,7 +70,6 @@ function getImportanceStats() {
             const data = Object.keys(todoCountByImportanceMap).map(speedName => ({ title: speedName, value: todoCountByImportanceMap[speedName] }))
             return data
         })
-
 }
 
 function _createTodos() {

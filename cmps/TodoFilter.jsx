@@ -1,12 +1,21 @@
-const { useState, useEffect } = React
+import { utilService } from "../services/util.service.js"
+import { SET_FILTER_BY } from "../store/store.js"
 
-export function TodoFilter({ filterBy, onSetFilterBy }) {
+const { useState, useEffect, useRef } = React
+const { useSelector, useDispatch } = ReactRedux
 
-    const [filterByToEdit, setFilterByToEdit] = useState({...filterBy})
+export function TodoFilter() {
+
+    const filterBy = useSelector(storeState => storeState.filterBy)
+    const dispatch = useDispatch()
+
+    const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
+    const debouncedApplyFilter = useRef(utilService.debounce(filterBy => {
+        dispatch({ type: SET_FILTER_BY, filterBy })
+    }, 500)).current
 
     useEffect(() => {
-        // Notify parent
-        onSetFilterBy(filterByToEdit)
+        debouncedApplyFilter(filterByToEdit)
     }, [filterByToEdit])
 
     function handleChange({ target }) {
@@ -32,21 +41,28 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
     // Optional support for LAZY Filtering with a button
     function onSubmitFilter(ev) {
         ev.preventDefault()
-        onSetFilterBy(filterByToEdit)
+        setFilterByToEdit(filterByToEdit)
     }
 
-    const { txt, importance } = filterByToEdit
+    const { txt, importance, status } = filterByToEdit
     return (
         <section className="todo-filter">
             <h2>Filter Todos</h2>
             <form onSubmit={onSubmitFilter}>
+                <label htmlFor="txt">Search: </label>
                 <input value={txt} onChange={handleChange}
-                    type="search" placeholder="By Txt" id="txt" name="txt"
-                />
+                    type="search" placeholder="By Txt" id="txt" name="txt" />
+
                 <label htmlFor="importance">Importance: </label>
-                <input value={importance} onChange={handleChange}
-                    type="number" placeholder="By Importance" id="importance" name="importance"
-                />
+                <input value={importance || ''} onChange={handleChange}
+                    type="number" placeholder="By Importance" id="importance" name="importance" />
+
+                <label htmlFor="status">Status: </label>
+                <select value={status} onChange={handleChange} id="status" name="status">
+                    <option value="">All</option>
+                    <option value="active">Active</option>
+                    <option value="done">Done</option>
+                </select>
 
                 <button hidden>Set Filter</button>
             </form>
